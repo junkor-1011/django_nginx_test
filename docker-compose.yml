@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  web_nginx:
+    image: nginx:1.17.9-alpine
+    depends_on:
+    - app_django
+    ports:
+      - "${PORT}:443"
+    volumes:
+      - ./web_nginx/conf.d:/etc/nginx/conf.d
+      - ./web_nginx/ssl:/etc/nginx/ssl
+    networks:
+      - nginx_network
+
+  app_django:
+    image: app_django_test_${src_tag}
+    expose: 
+      - 8000
+    networks:
+      - nginx_network
+
+networks:
+  nginx_network:
+    driver: bridge

@@ -1,0 +1,5 @@
+src_tag=python37_slim_buster
+ENV PATH $PATH:/home/app/.local/bin
+USER_UID=1000
+PORT=8443
+
