@@ -4,7 +4,8 @@
 
 
 ARG BASE_IMAGE=python:3.7-slim-buster
-ARG APP_NAME=Django_map_test
+#ARG APP_NAME=Django_map_test
+#ARG APP_NAME=app
 
 FROM ${BASE_IMAGE}
 
@@ -33,21 +34,23 @@ RUN useradd -m -u ${USER_UID} ${USER_NAME}
 # https://medium.com/@rlagowski/create-flask-app-with-uwsgi-nginx-certbot-for-ssl-and-all-this-with-docker-a9f23516618d
 #COPY --chown=app:app ./${PIP_REQUIREMENTS} /app/requirments.txt
 #COPY --chown=app:app ./app /app
-COPY ./requirements.txt /app/requirements.txt
-COPY ./${APP_NAME} /app
-RUN chown -R ${USER_NAME}:${USER_NAME} /app # --chown= では環境変数の代入が効かない
+COPY ./requirements.txt /tmp/requirements.txt
+COPY ./app /app
+RUN chown -R ${USER_NAME}:${USER_NAME} /app
 
 USER ${USER_UID}
 
 WORKDIR /app
 
 # pip
-ENV PATH $PATH:/home/app/.local/bin
+ENV PATH $PATH:/home/${USER_NAME}/.local/bin
 RUN python3 -m pip install --user --upgrade pip && \
-    python3 -m pip install -r requirements.txt --user
+    python3 -m pip install -r /tmp/requirements.txt --user
 
 #WORKDIR /app/${APP_NAME}    
 RUN echo $(pwd)
-RUN echo $(ls)
-CMD ["uwsgi", "--ini", "app/uwsgi.ini"]
+RUN echo $(ls /app)
+RUN python3 manage.py migrate && \
+    python3 manage.py collectstatic
+CMD ["uwsgi", "--ini", "uwsgi.ini"]
 

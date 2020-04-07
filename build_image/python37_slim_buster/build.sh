@@ -11,5 +11,4 @@ tar -czh . | docker build \
         -t app_django_test_python37_slim_buster \
         --build-arg BASE_IMAGE=python:3.7-slim-buster \
         --build-arg USER_UID=1000 \
-        --build-arg APP_NAME=Django_map_test \
         - 

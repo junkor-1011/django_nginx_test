@@ -10,11 +10,14 @@ services:
     volumes:
       - ./web_nginx/conf.d:/etc/nginx/conf.d
       - ./web_nginx/ssl:/etc/nginx/ssl
+      - staticdata:/app/static/
     networks:
       - nginx_network
 
   app_django:
     image: app_django_test_${src_tag}
+    volumes:
+      - staticdata:/app/static/
     expose: 
       - 8000
     networks:
@@ -23,3 +26,6 @@ services:
 networks:
   nginx_network:
     driver: bridge
+
+volumes:
+  staticdata:
