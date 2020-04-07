@@ -12,5 +12,7 @@ Note
    - https://www.macky-studio.com/entry/2019/07/01/132337
    - https://bbrfkr.hatenablog.jp/entry/2018/11/19/144114
 
-
+- createsuperuser oneliner
+   - https://jumpyoshim.hatenablog.com/entry/how-to-automate-createsuperuser-on-django
+   - https://www.tsukasa-blog.com/programming/django-commands-superuser/
 
