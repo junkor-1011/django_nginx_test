@@ -10,12 +10,13 @@ services:
     volumes:
       - ./web_nginx/conf.d:/etc/nginx/conf.d
       - ./web_nginx/ssl:/etc/nginx/ssl
+      - ./web_nginx/uwsgi_params:/etc/nginx/uwsgi_params
       - staticdata:/app/static/
     networks:
       - nginx_network
 
   app_django:
-    image: app_django_test_${src_tag}
+    image: app_django_test_${src_tag}:${app_image_tag:-latest}
     volumes:
       - staticdata:/app/static/
     expose: 
@@ -29,3 +30,4 @@ networks:
 
 volumes:
   staticdata:
+
